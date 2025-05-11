@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+       /* body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #79f173;
+        }
+        .signup-container {
+            background: rgb(87, 226, 44);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .signup-container h2 {
+            margin-bottom: 20px;
+        }
+        .signup-container input {
+            width: 90%;
+            padding: 10px;
+            margin:10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .signup-container button {
+            width: 100%;
+            padding: 10px;
+            background: #0b7d2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .signup-container button:hover {
+            background: #18d85f;
+        } */
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5e6cc;
+            margin: 0;
+            background-color: #dac6b2;
+        }
+        .signup-container {
+            background: #fff8e7;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #d4a373;
+        }
+        .signup-container h2 {
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+            color: #6d4c41;
+        }
+        .signup-container input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #d4a373;
+            border-radius: 8px;
+            display: block;
+            background: #fffdf5;
+        }
+        .signup-container button {
+            width: 100%;
+            padding: 12px;
+            background: #8f5e3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        .signup-container button:hover {
+            background: #6d4c41;
+        }
+        .signup-container p {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #6d4c41;
+        }
+        .signup-container a {
+            color: #8f5e3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>🌱Signup with RFarm</h2>
+        <form id="SignupForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="text" id="email" placeholder="email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="number" id="phnumber" placeholder="Phone number" required>
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+    
+</body>
+<script>
+    document.getElementById("SignupForm").addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevents page reload
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const phnumber = document.getElementById("phnumber").value;
+    const email =document.getElementById("email").value;
+
+
+    try {
+        const response = await fetch("/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password, phnumber,email}),
+        })
+
+        const data= await response.json();
+        if(response.ok){
+            alert(`signup successfull welcome to RFarm ${username} Refresh and login`);
+            window.location.href="/home";
+        }
+        else{
+            alert("signup failed");
+        }
+
+       
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+    }
+});
+
+</script>
+</html>

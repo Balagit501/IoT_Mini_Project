@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+        background: linear-gradient(to right, #b5f7bc, #c8e6ff);
+        min-height: 100vh;
+    }
+    
+    /* Navbar */
+    .navbar {
+        background-color: #0d5403;
+        color: white;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .navbar h2 {
+        font-size: 24px;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 12px;
+        font-size: 16px;
+    }
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Container */
+    #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    /* Cards */
+    .cards {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-top: 20px;
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+    
+    #weather {
+        background: linear-gradient(to right, rgb(109, 198, 222), rgb(255, 166, 0));
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    #weather div {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    
+    /* Status */
+    #status {
+        background: #d9f9ff;
+    }
+    .details {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    
+    /* Buttons */
+    .button, .manualbtn {
+        border: none;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .button:hover, .manualbtn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Manual Control Buttons */
+    #startbtn {
+        background-color: #4CAF50;
+    }
+    #stopbtn {
+        background-color: #f44336;
+    }
+    #startbtn:hover {
+        background-color: #45a049;
+    }
+    #stopbtn:hover {
+        background-color: #e53935;
+    }
+    
+    /* Threshold Form */
+    #setthreshold-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #setthreshold-form label {
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    #threshold {
+        width: 80px;
+        padding: 8px;
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+    #set-threshold-btn {
+        background-color: #ffc107;
+    }
+    #set-threshold-btn:hover {
+        background-color: #e0a800;
+    }
+    #notifications {
+    position: absolute;
+    right: 20px;
+    top: 80px;
+    width: 250px;
+    background-color: #fffbea;
+    border-left: 5px solid #ffc107;
+    padding: 15px;
+    font-size: 14px;
+}
+
+#notifications h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+#notification-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+#notification-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+
+
+    
+
+    /* Responsive Layout */
+    @media (max-width: 600px) {
+        .cards {
+            max-width: 50%;
+            padding: 15px;
+        }
+        #weather {
+            flex-direction: column;
+            align-items: center;
+        }
+        #notifications {
+        position: relative;
+        width: 90%;
+        margin: 10px auto;
+        top: 0;
+        right: 0;
+    }
+    }
+    </style>
+    
+<body>
+    <div class="navbar">
+        <h2>RFarm</h2>
+        <div>
+            <a href="home">Home</a>
+            <a href="fields">Fields</a>
+            <a href="login" id="auth-link">Login</a>
+            <a href="signup">Signup</a>
+        </div>
+    </div>
+    <div >
+        
+
+        <div id="container">
+            <h2>{{%NAME%}}</h2>
+            <h3>{{%SENSOR%}}</h3>
+            <input type="hidden" id="fieldId" value="{{%ID%}}">
+            <div  id="weather" class="cards">
+                  <div id="city">City:{{%CITY%}}</div>
+                  <div id="main">Main:{{%MAIN%}}</div>
+                  <div id="temperature">Temperature:{{%TEMP%}}</div>
+                  <div id="humidity">Humididty:{{%HUMIDITY%}}</div>
+        
+            </div>
+
+            <div id="status" class="cards">
+                <div id="water" class="details"></div>
+               <!--<div id="lastirrigation" class="details">{{%LASTIRRIGATION%}}</div>--> 
+                <div id="rain-detect" class="details"></div>
+                <div id="motor" class="details"></div>
+                <div id="thresholdpt" class="details"></div>
+               <!-- <button id="irrigatebtn" onclick="toggleIrrigation('{{%FARMID%}}')">{{%STATUS%}}</button>-->
+
+            </div>
+
+            <div id="automate" class="cards">
+                <div id="setthreshold-form">
+                    <label for="threshold" >Threshold :</label>
+                    <input type="number" id="threshold">
+                    <button class="button" type="submit" onclick="thresholds()" id="set-threshold-btn"> SET </button>
+                </div>
+
+               
+                
+            </div>
+
+            <div  id="manual" class="cards">
+                <button id="startbtn" class="button" onclick="motorOn()">Start</button>
+                <button id="stopbtn" class="button" onclick = "motorOff()">Stop</button> 
+            </div>
+         </div>
+
+         <div id="notifications" class="cards">
+            <h3>Notifications</h3>
+            <ul id="notification-list">
+                <li>Welcome to RFarm 🌱</li>
+                
+            </ul>
+        </div>
+        
+         
+        
+     </div>
+        
+</body>
+<script>
+   
+   let fieldId= document.getElementById("fieldId").value;
+   
+   async function motorOn(){
+        const command= "ON"; 
+        const response = await fetch("/manualcommands",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ command,fieldId }),
+        })
+       
+   }
+   async function motorOff(){
+        const command = "OFF"; 
+        const response = await fetch("/manualcommands",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ command,fieldId }),
+        })
+       
+   }
+    
+   
+
+   async function thresholds(){
+        const threshold = document.getElementById("threshold").value;  
+        const response = await fetch("/thresholds",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ threshold, fieldId  }),
+        })
+       
+   }
+
+        
+    
+
+
+   // dynamic based on page context
+   
+   
+  async function updateFieldStatus() {
+    try {
+      const response = await fetch(`/currentStatus/${fieldId}`);
+      const data = await response.json();
+     // const notificationList = document.getElementById("notification-list");
+
+      document.getElementById("water").textContent = "Water Content : " + data.field.waterOrMoisture+ "%";
+      document.getElementById("rain-detect").textContent = "Rain : " + (data.field.rain ? "Detected" : "No Rain");
+      document.getElementById("motor").textContent = "Motor : " + data.field.motorStatus;
+      document.getElementById("thresholdpt").textContent = "Threshold : " + data.threshold.threshold;
+      const temp = parseFloat(data.field.temp);
+    const humidity = parseFloat(data.field.humidity);
+
+    if (temp > 35 ) {
+      const li = document.createElement("li");
+      li.textContent = "⚠️ High Temperature detected: " + temp + "°C";
+      notificationList.appendChild(li);
+    }
+
+    if (humidity < 30 ) {
+      const li = document.createElement("li");
+      li.textContent = "💧 Low Humidity detected: " + humidity + "%";
+      notificationList.appendChild(li);
+    }
+
+    if( temp<26 && humidity >50){
+        const li = document.createElement("li");
+      li.textContent = "💧 Rain expected ";
+      notificationList.appendChild(li);
+    }
+    } catch (err) {
+      console.error("Error fetching status:", err);
+    }
+  }
+
+  setInterval(updateFieldStatus, 3000);
+
+  // Initial call
+  updateFieldStatus();
+
+  
+</script>
+
+
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    body{
+        background-color: #8dcd85;
+    }
+   
+    #container{
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+    }
+
+    #irrigatebtn{
+        padding:10px;
+        transform:scale(110%);
+        background-color:rgb(77, 203, 121);
+        border-radius:15px;
+    }
+    
+    
+    /* Navbar Styling */
+    .navbar {
+        background-color: #0d5403;
+        color: rgb(54, 202, 108);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 16px;
+    }
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+    /* Product Grid */
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center; /* Ensures items stay centered */
+    align-items: center; /* Aligns items properly */
+    }
+    .field-card {
+    width: 100%; /* Makes sure it adapts to the column width */
+    max-width: 300px; /* Prevents items from getting too big */
+    height: 250px;
+    border-radius: 15px;
+    background-color: green;
+    text-align: center;
+    padding: 15px;
+    object-fit:cover;
+    }
+    .btn-group {
+        margin-top: 10px;
+    }
+    #waterlevel{
+        padding:10px;
+        
+    }
+    .cards{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction:column;
+        border-radius:15px;
+        background-color:hsl(0, 2%, 55%);
+        width: 550px;
+        height:200px;
+        margin-top:10px;
+        text-align:center;
+    }
+    .button{
+        border:none;
+        border-radius: 15px;
+        margin-top: 20px;
+        padding:5px;
+        width:80px;
+        font-family: sans-serif;
+        color:rgb(233, 238, 240);
+        background-color: rgb(78, 207, 23);
+    }
+    .button:hover{
+        cursor:pointer;
+    }
+    #weather{
+        background: linear-gradient(to right, rgb(109, 198, 222), rgb(255, 166, 0));
+        display:flex;
+        justify-content:space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding:10px;
+    }
+    #weather div{
+        padding:10px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: 800;
+        border-radius: 10px;
+    }
+    #setthreshold-form{
+        display:flex;
+        justify-content: center;
+        align-items: center ;
+        flex-direction:column;
+    }
+    #setthreshold-form label{
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: large;
+    }
+    #threshold{
+        border-radius:15px;
+        width:70px;
+        height:50px;
+        text-align: center;
+        font-size: larger;
+    }
+    #automate{
+        background-color: rgb(66, 134, 216);
+    }
+    
+    .details{
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size:large;
+        margin-bottom:10px ;
+    }
+    #status{
+        background-color: rgb(131, 246, 246);
+    }
+    .manualbtn{
+        border:none;
+        border-radius: 15px;
+        margin-top: 20px;
+        padding:5px;
+        width:80px;
+        font-family: sans-serif;
+        color:rgb(255, 255, 255);
+    }
+    
+    #startbtn{
+        background-color: #8dcd85;
+    }
+    #startbtn:hover{
+        transform :scale(110%);background-color: #53e540;
+
+    }
+    #stopbtn{
+        background-color: rgb(174, 73, 73);
+    }
+    #stopbtn:hover{
+        transform :scale(110%);background-color: rgb(243, 5, 5);
+    }
+    #manual{
+        background-color: rgb(17, 236, 221);
+    }
+    #set-threshold-btn:hover{
+        transform :scale(110%);background-color: rgb(170, 222, 14);
+    }
+    
+
+   
+
+</style>
+<body>
+    <div class="navbar">
+        <h2>RFarm</h2>
+        <div>
+            <a href="home">Home</a>
+            <a href="fields">Fields</a>
+            <a href="login" id="auth-link">Login</a>
+            <a href="signup">Signup</a>
+        </div>
+    </div>
+    <div>
+        <div id="container">
+            <h2>{{%FIELDNAME%}}</h2>
+            <h3>{{%SENSOR%}}</h3>
+            <input type="hidden" id="fieldId" value="{{%ID%}}">
+            <div  id="weather" class="cards">
+                  <div id="city">City:{{%CITY%}}</div>
+                  <div id="temperature">Temperature:{{%TEMP%}}</div>
+                  <div id="humidity">Humididty:{{%HUMIDITY%}}</div>
+        
+            </div>
+
+            <div id="status" class="cards">
+                <div id="water" class="details"></div>
+               <!--<div id="lastirrigation" class="details">{{%LASTIRRIGATION%}}</div>--> 
+                <div id="rain-detect" class="details"></div>
+                <div id="motor" class="details"></div>
+                <div id="thresholdpt" class="details"></div>
+               <!-- <button id="irrigatebtn" onclick="toggleIrrigation('{{%FARMID%}}')">{{%STATUS%}}</button>-->
+
+            </div>
+
+            <div id="automate" class="cards">
+                <div id="setthreshold-form">
+                    <label for="threshold" >Threshold :</label>
+                    <input type="number" id="threshold">
+                    <button class="button" type="submit" onclick="thresholds()" id="set-threshold-btn"> SET </button>
+                </div>
+
+               
+                
+            </div>
+
+            <div  id="manual" class="cards">
+                <button id="startbtn" class="button" onclick="motorOn()">Start</button>
+                <button id="stopbtn" class="button" onclick = "motorOff()">Stop</button> 
+            </div>
+            </div>
+        </div>
+        
+</body>
+<script>
+   
+   let fieldId= document.getElementById("fieldId").value;
+   
+   async function motorOn(){
+        const command= "ON"; 
+        const response = await fetch("/manualcommands",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ command,fieldId }),
+        })
+       
+   }
+   async function motorOff(){
+        const command = "OFF"; 
+        const response = await fetch("/manualcommands",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ command,fieldId }),
+        })
+       
+   }
+
+
+   async function thresholds(){
+        const threshold = document.getElementById("threshold").value;  
+        const response = await fetch("/thresholds",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ threshold, fieldId  }),
+        })
+       
+   }
+
+        
+    
+
+
+   // dynamic based on page context
+   
+  async function updateFieldStatus() {
+    try {
+      const response = await fetch(`/currentStatus/${fieldId}`);
+      const data = await response.json();
+
+      document.getElementById("water").textContent = "Water Content : " + data.field.waterOrMoisture+ "%";
+      document.getElementById("rain-detect").textContent = "Rain : " + (data.field.rain ? "Detected" : "No Rain");
+      document.getElementById("motor").textContent = "Motor : " + data.field.motorStatus;
+      document.getElementById("thresholdpt").textContent = "Threshold : " + data.threshold.threshold;
+    } catch (err) {
+      console.error("Error fetching status:", err);
+    }
+  }
+
+  setInterval(updateFieldStatus, 3000);
+
+  // Initial call
+  updateFieldStatus();
+</script>
+
+
+</html>

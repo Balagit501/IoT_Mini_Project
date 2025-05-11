@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    body {
+        background-color: #c0f0bf;
+    }
+    /* Navbar Styling */
+    .navbar {
+        background-color: #0d5403;
+        color: rgb(54, 202, 108);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 16px;
+    }
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+    /* Product Grid */
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    .field-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .field-card{
+        width:250px;
+        height:250px;
+        border-radius:15px;
+        background-color: green;
+        text-align:center;
+        padding:15px;
+    }
+    .btn-group {
+        margin-top: 10px;
+    }
+    .buy-btn {
+        display:block;
+        background-color: #1453da;
+        color: white;
+    }
+
+
+
+
+
+</style>
+<body>
+    <div class="navbar">
+        <h2>RFarm</h2>
+        <div>
+            <a href="home">Home</a>
+            <a href="#" id="fields">Fields</a>
+            <a href="login" id="auth-link">Login</a>
+            <a href="signup">Signup</a>
+            
+
+        </div>
+    </div>
+
+    <div class="container">
+       
+    </div>
+</body>
+
+<script>
+    
+
+    document.getElementById("fields").addEventListener("click", async () => {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+        alert("You need to log in to view your fields.");
+        window.location.href = "/login"; // Redirect to login
+        return;
+    }
+   
+
+    const response = await fetch("/fieldsauth", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token // Send token
+        }
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        localStorage.setItem("farmer-fields",data.fieldHtml);
+        window.location.href="/fields";
+        
+    } else {
+        alert("Error: " + data.error);
+        window.location.href = "/login.html"; // Redirect if unauthorized
+    }
+});
+</script>
+</html>

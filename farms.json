@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "percent": "50%",
+    "status": "OFF"
+  },
+  {
+    "id": "2",
+    "percent": "60%",
+    "status": "OFF"
+  },
+  {
+    "id": "3",
+    "percent": "40%",
+    "status": "ON"
+  }
+]
